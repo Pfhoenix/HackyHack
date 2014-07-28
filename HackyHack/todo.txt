@@ -1,0 +1,40 @@
+UINetworkView
+
+UITextBox
+ - need to implement this
+ - will necessitate handling keyboard display/hiding and input capturing
+
+UIMenu
+ - need to test having a lot of open items to scroll through
+   - need to auto-scroll to the new end of the open list when items are added or removed
+
+UIWindow
+ - dynamic background would be seriously cool
+
+SimpleGestureProcessor : 
+ - there's still an issue with releasing both fingers after a scale triggering a tap
+
+UIManager :
+ - think about how to handle universal messageboxes
+
+ContentManager
+ - need to write bitmap/image loading code
+   - needs to allow loading in a different thread
+     - this will enable progress bar for large load batches
+   - need to allow immediate/blocking loading
+     - for on-demand loading (such as initial title screen and whatnot)
+
+basic Android stuff
+ - need to handle having to reload textures, too
+   - this doesn't seem to be immediately necessary, so...?
+
+UITaskBar
+ - really ugly, need to update visuals
+
+
+Ideas :
+
+When player starts the app, need several screens :
+ - company logo splash
+ - loading screen with OS boot stuff
+   - link each block of technobabble text to loading specific assets and such
