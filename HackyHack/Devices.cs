@@ -27,8 +27,8 @@ namespace HackyHack
 		// the host device for this connection
 		public Device Host;
 
-		// the unique update ID to prevent backtracking when crawls touch this connection
-		public uint UpdateID;
+		// the unique ID to prevent backtracking when crawls touch this connection
+		public uint CrawlID;
 
 
 		public DeviceConnection(Device h, EDeviceConnectionType t, EDeviceConnectionMedium m, uint mtb, uint mcb, int mc)
@@ -84,6 +84,18 @@ namespace HackyHack
 
 			return true;
 		}
+
+		public void CrawlThrough(Queue<Device> queue)
+		{
+			foreach (DeviceConnection dc in Connections)
+			{
+				if (dc.Host.CrawlID != CrawlID)
+				{
+					dc.CrawlID = CrawlID;
+					queue.Enqueue(dc.Host);
+				}
+			}
+		}
 	}
 
 	// the base class for all devices
@@ -93,7 +105,7 @@ namespace HackyHack
 	public class Device
 	{
 		public bool bActive;
-		List<DeviceConnection> Connections;
+		public readonly List<DeviceConnection> Connections;
 
 		public ECrawlOptions CrawlDescriptor;
 		public uint CrawlID;
@@ -138,6 +150,18 @@ namespace HackyHack
 		public bool ConnectTo(Device other, DeviceConnection by)
 		{
 			return by.ConnectTo(other);
+		}
+
+		public void CrawlThrough(Queue<Device> queue)
+		{
+			foreach (DeviceConnection dc in Connections)
+			{
+				if (dc.CrawlID != CrawlID)
+				{
+					dc.CrawlID = CrawlID;
+					dc.CrawlThrough(queue);
+				}
+			}
 		}
 	}
 
