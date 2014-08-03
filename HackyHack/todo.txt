@@ -1,3 +1,17 @@
+Need a general network crawler
+ - flags for things like :
+   - CRAWL_ALL
+   - CRAWL_NO_DTE
+   - CRAWL_ONLY_ACTIVE
+   - CRAWL_ONLY_NET_DEVICE
+   - CRAWL_ONLY_etcetc
+ - need a function callback for each valid device touched
+   - return true to continue crawling
+   - return false to immediately stop crawling
+
+Devices
+ - working on base functionality
+
 UINetworkView
 
 UITextBox
@@ -38,3 +52,13 @@ When player starts the app, need several screens :
  - company logo splash
  - loading screen with OS boot stuff
    - link each block of technobabble text to loading specific assets and such
+ - discovery/crawl of entire network starting at all DTEs and spreading out from there
+
+
+Issues :
+ - bandwidth updating is currently DTE-out
+   - start with this and see if this really is an issue needing optimization
+ - is fine until you consider cases where clients may be off or devices may be active but not pulling traffic on their own
+   - clients consume bandwidth, network devices distribute it
+ - ideal behavior would be to start with all clients/servers that push up bandwidth needs
+   - once bandwidth need pass reaches DTE, DTE allocates bandwidth down through each network device, which would then properly allocate bandwidth

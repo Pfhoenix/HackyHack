@@ -66,6 +66,7 @@
     <Compile Include="UITextEntryBox.cs" />
     <Compile Include="UINetworkView.cs" />
     <Compile Include="Devices.cs" />
+    <Compile Include="Network.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
