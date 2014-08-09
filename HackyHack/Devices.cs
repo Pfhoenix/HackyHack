@@ -47,6 +47,19 @@ namespace HackyHack
 			return Connections.Count;
 		}
 
+		public int GetNumUncrawledConnections()
+		{
+			int i = 0;
+			foreach (DeviceConnection dc in Connections)
+			{
+				if (dc.CrawlID == CrawlID) continue;
+				if (dc.Host.CrawlID == CrawlID) continue;
+				i++;
+			}
+
+			return i;
+		}
+
 		public uint GetPerConnectionBandwidth()
 		{
 			if (Connections.Count == 0) return 0;
@@ -182,6 +195,8 @@ namespace HackyHack
 	// ALL networks have a DTE, and shutting it down closes off the entire network immediately
 	public class DTE : NetworkDevice
 	{
+		public uint IncomingBandwidth;
+
 		public DTE()
 		{
 			CrawlDescriptor = ECrawlOptions.DTEs;

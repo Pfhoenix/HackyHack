@@ -1,13 +1,5 @@
 Need a general network crawler
- - flags for things like :
-   - CRAWL_ALL
-   - CRAWL_NO_DTE
-   - CRAWL_ONLY_ACTIVE
-   - CRAWL_ONLY_NET_DEVICE
-   - CRAWL_ONLY_etcetc
- - need a function callback for each valid device touched
-   - return true to continue crawling
-   - return false to immediately stop crawling
+ - need to work on a BandwidthUpdate callback
 
 Devices
  - working on base functionality

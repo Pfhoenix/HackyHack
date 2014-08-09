@@ -96,6 +96,35 @@ namespace HackyHack
 				}
 			}
 		}
+
+		public bool BandwidthUpdate(Device d)
+		{
+			uint deviceBandwidth = 0;
+			int numCons = 0;
+
+			DTE dte = d as DTE;
+			if (dte != null)
+			{
+				deviceBandwidth = dte.IncomingBandwidth;
+			}
+			else
+			{
+				foreach (DeviceConnection dc in d.Connections)
+				{
+					if (dc.CrawlID == CrawlID)
+					{
+						deviceBandwidth += dc.CurTotalBandwidth;
+					}
+				}
+			}
+
+			// calculate the bandwidth per connection to D that hasn't already been touched
+			foreach (DeviceConnection dc in d.Connections)
+			{
+				numCons += dc.GetNumUncrawledConnections();
+			}
+
+			return true;
+		}
 	}
 }
-
