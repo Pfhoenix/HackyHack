@@ -39,20 +39,28 @@ namespace HackyHack
 	{
 		// this helps facilitate proper bandwidth allocation crawling
 		public readonly List<DTE> DTEs;
+		public readonly List<Device> BandwidthConsumers;
 		public readonly List<Device> Devices;
 
 		// return true means keep crawling, false means to stop immediately
 		public delegate bool NetworkCrawlCallback(Device d);
 
+		public readonly Queue<Device> TickDeviceQueue;
+
 		uint CrawlID;
+		uint BandID;
 
 		public Network()
 		{
 			DTEs = new List<DTE>(5);
 			Devices = new List<Device>(100);
+			BandwidthConsumers = new List<Device>(100);
+			TickDeviceQueue = new Queue<Device>(50);
 			CrawlID = 0;
+			BandID = 0;
 		}
 
+		// useful for general discovery or finding a path between devices
 		public void NetworkCrawl(ECrawlOptions options, NetworkCrawlCallback callback, Device start = null)
 		{
 			CrawlID++;
@@ -97,34 +105,102 @@ namespace HackyHack
 			}
 		}
 
+		public void TickNetwork(bool bReset)
+		{
+			if (bReset)
+			{
+				TickDeviceQueue.Clear();
+				BandID++;
+			}
+			if (TickDeviceQueue.Count == 0)
+			{
+				// BandwidthConsumers propogate BandwidthDemand
+				foreach (Device bc in BandwidthConsumers)
+				{
+					bc.BandID = BandID;
+					if (!bc.bActive) continue;
+					bc.BandwidthAvailable = 0;
+					if (bc.BandwidthDemand == 0) continue;
+					// each active connection to this consumer gets bandwidth demand from this consumer
+					foreach (DeviceConnection dc in bc.Connections)
+					{
+						uint aConns = (uint)dc.GetNumActiveConnections();
+						if (aConns > 0)
+						{
+							dc.BandID = BandID;
+							dc.BandwidthDemand = bc.BandwidthDemand / (uint)bc.Connections.Count;
+							uint dcBD = dc.BandwidthDemand;
+							foreach (DeviceConnection dcc in dc.Connections)
+							{
+								if (dcc.Host.bActive)
+								{
+									if (dcc.BandID != BandID)
+									{
+										dcc.BandID = BandID;
+										dcc.BandwidthDemand = dcBD / aConns;
+										dcBD -= dcBD / aConns--;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				// DTEs propogate BandwidthAvailable
+			}
+		}
+
+		/* older/alternate bandwidth update code
 		public bool BandwidthUpdate(Device d)
 		{
-			uint deviceBandwidth = 0;
-			int numCons = 0;
-
 			DTE dte = d as DTE;
 			if (dte != null)
 			{
-				deviceBandwidth = dte.IncomingBandwidth;
+				// dte needs to give its one connection all of dte.IncomingBandwidth
 			}
 			else
 			{
+				uint deviceBandwidth = 0;
+				int numCons = 0;
+
 				foreach (DeviceConnection dc in d.Connections)
 				{
 					if (dc.CrawlID == CrawlID)
 					{
-						deviceBandwidth += dc.CurTotalBandwidth;
+						deviceBandwidth += dc.BandwidthAvailable;
 					}
-				}
-			}
 
-			// calculate the bandwidth per connection to D that hasn't already been touched
-			foreach (DeviceConnection dc in d.Connections)
-			{
-				numCons += dc.GetNumUncrawledConnections();
+					numCons += dc.GetNumUncrawledConnections();
+				}
 			}
 
 			return true;
 		}
+
+		public void RecalculateBandwidth()
+		{
+			Queue<Device> processQueue = new Queue<Device>();
+			Queue<Device> consumerStops = new Queue<Device>();
+
+			CrawlID++;
+
+			// first push bandwidth demand starting at clients
+			foreach (Device c in BandwidthConsumers)
+			{
+				c.CrawlID = CrawlID;
+				if (!c.bActive) continue;
+				c.BandwidthAvailable = 0;
+				if (c.BandwidthDemand == 0) continue;
+				// each connection to this consumer gets bandwidth demand from this consumer
+				foreach (DeviceConnection dc in c.Connections)
+				{
+					int aConns = dc.GetNumActiveConnections();
+					if (aConns > 0)
+					dc.CrawlID = CrawlID;
+					//dc.BandwidthDemand
+				}
+			}
+		}
+		*/
 	}
 }

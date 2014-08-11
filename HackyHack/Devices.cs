@@ -14,14 +14,14 @@ namespace HackyHack
 		public EDeviceConnectionMedium Medium;
 
 		// amount of theoretical maximum data bandwidth
-		public uint MaxTotalBandwidth;
 		public uint MaxPerConnectionBandwidth;
 
 		// amount of current data usage
-		public uint CurTotalBandwidth;
+		public uint BandwidthAvailable;
+		public uint BandwidthDemand;
 
 		// all the devices connected together by this connection
-		readonly List<DeviceConnection> Connections;
+		public readonly List<DeviceConnection> Connections;
 		public int MaxConnections;
 
 		// the host device for this connection
@@ -30,13 +30,15 @@ namespace HackyHack
 		// the unique ID to prevent backtracking when crawls touch this connection
 		public uint CrawlID;
 
+		// the unique ID to prevent backtracking when bandwidth ticking touches this connection
+		public uint BandID;
 
-		public DeviceConnection(Device h, EDeviceConnectionType t, EDeviceConnectionMedium m, uint mtb, uint mcb, int mc)
+
+		public DeviceConnection(Device h, EDeviceConnectionType t, EDeviceConnectionMedium m, uint mcb, int mc)
 		{
 			Connections = new List<DeviceConnection>();
 			Host = h;
 			Type = t;
-			MaxTotalBandwidth = mtb;
 			MaxPerConnectionBandwidth = mcb;
 			Medium = m;
 			MaxConnections = mc;
@@ -60,11 +62,13 @@ namespace HackyHack
 			return i;
 		}
 
-		public uint GetPerConnectionBandwidth()
+		public int GetNumActiveConnections()
 		{
-			if (Connections.Count == 0) return 0;
+			int aConns = 0;
+			foreach (DeviceConnection dc in Connections)
+				if (dc.Host.bActive) aConns++;
 
-			return CurTotalBandwidth / (uint)Connections.Count;
+			return aConns;
 		}
 
 		public bool IsConnectedTo(Device d)
@@ -109,6 +113,11 @@ namespace HackyHack
 				}
 			}
 		}
+
+		public void PropogateBandwidthDemand()
+		{
+			foreach (D)
+		}
 	}
 
 	// the base class for all devices
@@ -122,6 +131,10 @@ namespace HackyHack
 
 		public ECrawlOptions CrawlDescriptor;
 		public uint CrawlID;
+
+		public uint BandwidthDemand;
+		public uint BandwidthAvailable;
+		public uint BandID;
 
 		public Device()
 		{
@@ -183,10 +196,6 @@ namespace HackyHack
 	public class NetworkDevice : Device
 	{
 		public NetworkDevice()
-		{
-		}
-
-		public void UpdateBandwidth()
 		{
 		}
 	}
