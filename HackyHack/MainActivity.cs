@@ -1,6 +1,7 @@
 using Android.App;
 using Android.OS;
 using Android.Content.PM;
+using RPCoreLib;
 
 namespace HackyHack
 {
@@ -22,7 +23,7 @@ namespace HackyHack
 			//this.RequestWindowFeature(WindowFeatures.NoTitle);
 
 			// Create our OpenGL view, and display it
-			Globals.g.App = this;
+			RPGlobals.g.App = this;
 			view = new GLView1(this);
 			SetContentView(view);
 		}

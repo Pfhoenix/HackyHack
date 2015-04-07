@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OpenTK.Graphics.ES11;
 using Android.Graphics;
+using RPCoreLib;
 
 namespace HackyHack
 {
@@ -112,7 +113,7 @@ namespace HackyHack
 					return true;
 
 				case EInputEvent.Scroll:
-					if (AutoScrollTime > Globals.g.RunningTime) return true;
+					if (AutoScrollTime > RPGlobals.g.RunningTime) return true;
 					ScrollX -= x;
 					if (ScrollX + TaskbarAreaWidth > TotalItemsWidth) ScrollX = TotalItemsWidth - TaskbarAreaWidth;
 					if (ScrollX < 0) ScrollX = 0;
@@ -142,28 +143,28 @@ namespace HackyHack
 			if (Items.Count > 1) TotalItemsWidth += ItemPadding;
 			item.DisplayWidth = UpBrackets[0].Width + UpBrackets[1].Width;
 			TotalItemsWidth += item.DisplayWidth;
-			item.GrowthTime = Globals.g.RunningTime + AnimationTimeFrame + TextFadeTimeFrame;
+			item.GrowthTime = RPGlobals.g.RunningTime + AnimationTimeFrame + TextFadeTimeFrame;
 
-			if ((AutoScrollTo != 0) || (AutoScrollTime <= Globals.g.RunningTime))
+			if ((AutoScrollTo != 0) || (AutoScrollTime <= RPGlobals.g.RunningTime))
 			{
 				AutoScrollTo = 0;
 				AutoScrollStart = ScrollX;
-				AutoScrollTime = Globals.g.RunningTime + AutoScrollTimeFrame;
+				AutoScrollTime = RPGlobals.g.RunningTime + AutoScrollTimeFrame;
 			}
 		}
 
 		public void RemoveWindow(UIWindow uiw)
 		{
 			UITaskBarItem item = Items.Find(i => i.Window == uiw);
-			item.ShrinkTime = Globals.g.RunningTime + AnimationTimeFrame + TextFadeTimeFrame;
+			item.ShrinkTime = RPGlobals.g.RunningTime + AnimationTimeFrame + TextFadeTimeFrame;
 		}
 
 		protected override void UpdateMe(float dt)
 		{
 			if (AutoScrollTime > 0)
 			{
-				ScrollX = Globals.g.Smooth_Interp_Float(AutoScrollStart, AutoScrollTo, AutoScrollTime - AutoScrollTimeFrame, AutoScrollTime);
-				if (AutoScrollTime < Globals.g.RunningTime) AutoScrollTime = 0;
+				ScrollX = InterpolationHelper.Smooth_Interp_Float(AutoScrollStart, AutoScrollTo, AutoScrollTime - AutoScrollTimeFrame, AutoScrollTime);
+				if (AutoScrollTime < RPGlobals.g.RunningTime) AutoScrollTime = 0;
 			}
 
 			for (int i = 0; i < Items.Count; i++)
@@ -171,13 +172,13 @@ namespace HackyHack
 				if (Items[i].GrowthTime > 0)
 				{
 					TotalItemsWidth -= Items[i].DisplayWidth;
-					Items[i].DisplayWidth = UpBrackets[0].Width + UpBrackets[1].Width + Globals.g.Linear_Interp_Float(0, Items[i].TextWidth, Items[i].GrowthTime - AnimationTimeFrame - TextFadeTimeFrame, Items[i].GrowthTime - TextFadeTimeFrame);
+					Items[i].DisplayWidth = UpBrackets[0].Width + UpBrackets[1].Width + InterpolationHelper.Linear_Interp_Float(0, Items[i].TextWidth, Items[i].GrowthTime - AnimationTimeFrame - TextFadeTimeFrame, Items[i].GrowthTime - TextFadeTimeFrame);
 					TotalItemsWidth += Items[i].DisplayWidth;
-					if (Globals.g.RunningTime >= Items[i].GrowthTime) Items[i].GrowthTime = 0;
+					if (RPGlobals.g.RunningTime >= Items[i].GrowthTime) Items[i].GrowthTime = 0;
 				}
 				else if (Items[i].ShrinkTime > 0)
 				{
-					if (Globals.g.RunningTime >= Items[i].ShrinkTime)
+					if (RPGlobals.g.RunningTime >= Items[i].ShrinkTime)
 					{
 						TotalItemsWidth -= Items[i].DisplayWidth + ItemPadding;
 						if (TotalItemsWidth < 0) TotalItemsWidth = 0;
@@ -185,7 +186,7 @@ namespace HackyHack
 						continue;
 					}
 					TotalItemsWidth -= Items[i].DisplayWidth;
-					Items[i].DisplayWidth = UpBrackets[0].Width + UpBrackets[1].Width + Globals.g.Linear_Interp_Float(Items[i].TextWidth, 0, Items[i].ShrinkTime - AnimationTimeFrame - TextFadeTimeFrame + TextFadeTimeFrame, Items[i].ShrinkTime);
+					Items[i].DisplayWidth = UpBrackets[0].Width + UpBrackets[1].Width + InterpolationHelper.Linear_Interp_Float(Items[i].TextWidth, 0, Items[i].ShrinkTime - AnimationTimeFrame - TextFadeTimeFrame + TextFadeTimeFrame, Items[i].ShrinkTime);
 					TotalItemsWidth += Items[i].DisplayWidth;
 				}
 			}
@@ -251,7 +252,7 @@ namespace HackyHack
 					// the total amount of time the entire animation takes
 					float AnimatingStartTime = item.GrowthTime - AnimationTimeFrame - TextFadeTimeFrame;
 					// the amount of time since starting this
-					float TimeAnimating = Globals.g.RunningTime - AnimatingStartTime;
+					float TimeAnimating = RPGlobals.g.RunningTime - AnimatingStartTime;
 					int NumFullChars = 0;
 					float dx = DrawX;
 					for (int i = 0; i < item.DisplayText.Length; i++)
@@ -278,7 +279,7 @@ namespace HackyHack
 
 							s = item.DisplayText.Substring(i, 1);
 							st = TextFont.MeasureText(s);
-							Color cc = Globals.g.Linear_Interp_Color(color, Color.White, i * TextPerCharDelay + AnimatingStartTime, i * TextPerCharDelay + AnimatingStartTime + TextFadeTimeFrame);
+							Color cc = InterpolationHelper.Linear_Interp_Color(color, Color.White, i * TextPerCharDelay + AnimatingStartTime, i * TextPerCharDelay + AnimatingStartTime + TextFadeTimeFrame);
 							GL.Color4(cc.R, cc.G, cc.B, cc.A);
 							Renderer.r.DrawText(s, TextFont, dx, py + (Bounds.Y - TextFont.CharHeight) / 2);
 							dx += st.X;
@@ -304,7 +305,7 @@ namespace HackyHack
 					// the total amount of time the entire animation takes
 					float AnimatingStartTime = item.ShrinkTime - AnimationTimeFrame - TextFadeTimeFrame;
 					// the amount of time since starting this
-					float TimeAnimating = Globals.g.RunningTime - AnimatingStartTime;
+					float TimeAnimating = RPGlobals.g.RunningTime - AnimatingStartTime;
 					int NumFullChars = 0;
 					float dx = DrawX;
 					for (int i = 0; i < item.DisplayText.Length; i++)
@@ -331,7 +332,7 @@ namespace HackyHack
 
 							s = item.DisplayText.Substring(i, 1);
 							st = TextFont.MeasureText(s);
-							Color cc = Globals.g.Linear_Interp_Color(Color.White, color, (item.DisplayText.Length - i - 1) * TextPerCharDelay + AnimatingStartTime, (item.DisplayText.Length - i - 1) * TextPerCharDelay + AnimatingStartTime + TextFadeTimeFrame);
+							Color cc = InterpolationHelper.Linear_Interp_Color(Color.White, color, (item.DisplayText.Length - i - 1) * TextPerCharDelay + AnimatingStartTime, (item.DisplayText.Length - i - 1) * TextPerCharDelay + AnimatingStartTime + TextFadeTimeFrame);
 							GL.Color4(cc.R, cc.G, cc.B, cc.A);
 							Renderer.r.DrawText(s, TextFont, dx, py + (Bounds.Y - TextFont.CharHeight) / 2);
 							dx += st.X;

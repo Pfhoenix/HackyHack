@@ -1,6 +1,7 @@
 using System;
 using OpenTK.Graphics.ES11;
 using Android.Graphics;
+using RPCoreLib;
 
 namespace HackyHack
 {
@@ -54,9 +55,9 @@ namespace HackyHack
 			}
 
 			bgcolor = new Color();
-			bgcolor.R = (byte)(Globals.g.RNG.Next(128) + 128);
-			bgcolor.G = (byte)(Globals.g.RNG.Next(128) + 128);
-			bgcolor.B = (byte)(Globals.g.RNG.Next(128) + 128);
+			bgcolor.R = (byte)(RPGlobals.g.RNG.Next(128) + 128);
+			bgcolor.G = (byte)(RPGlobals.g.RNG.Next(128) + 128);
+			bgcolor.B = (byte)(RPGlobals.g.RNG.Next(128) + 128);
 			bgcolor.A = 255;
 
 			Texture t = ContentManager.cm.FindTexture("window_ur_corner");
@@ -77,7 +78,7 @@ namespace HackyHack
 
 			bOpening = true;
 			bAcceptsInput = false;
-			AnimStartTime = Globals.g.RunningTime;
+			AnimStartTime = RPGlobals.g.RunningTime;
 		}
 
 		public void SetHidden(bool bH)
@@ -181,7 +182,7 @@ namespace HackyHack
 							//RestorePosition.Set(Position);
 							//RestoreSize.Set(Bounds);
 							MoveTo(0, 0);
-							Resize(Parent.Bounds.X, Parent.Bounds.Y - UIManager.ui.Root.Taskbar.Bounds.Y);
+							Resize(Parent.Bounds.X, Parent.Bounds.Y - (UIManager.ui.Root as UIHackyRoot).Taskbar.Bounds.Y);
 							bMoving = false;
 						}
 					}
@@ -222,9 +223,9 @@ namespace HackyHack
 
 			bClosing = true;
 			bAcceptsInput = false;
-			AnimStartTime = Globals.g.RunningTime;
+			AnimStartTime = RPGlobals.g.RunningTime;
 
-			UIManager.ui.Root.Taskbar.RemoveWindow(this);
+			(UIManager.ui.Root as UIHackyRoot).Taskbar.RemoveWindow(this);
 		}
 
 		protected override void RenderMe(float px, float py)
@@ -313,7 +314,7 @@ namespace HackyHack
 
 		protected virtual void RenderOpening(float px, float py)
 		{
-			float AnimTime = Globals.g.RunningTime - AnimStartTime;
+			float AnimTime = RPGlobals.g.RunningTime - AnimStartTime;
 
 			if (AnimTime >= AnimOpen_Step4)
 			{
@@ -455,7 +456,7 @@ namespace HackyHack
 
 		protected virtual void RenderClosing(float px, float py)
 		{
-			float AnimTime = Globals.g.RunningTime - AnimStartTime;
+			float AnimTime = RPGlobals.g.RunningTime - AnimStartTime;
 			
 			// going over means we render nothing, since we're closing anyways
 			if (AnimTime >= AnimClose_Step4)

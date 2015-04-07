@@ -14,6 +14,7 @@
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AssemblyName>HackyHack</AssemblyName>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,25 +49,14 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="SimpleGestureProcessor.cs" />
-    <Compile Include="Vector2.cs" />
-    <Compile Include="UIManager.cs" />
-    <Compile Include="UIElement.cs" />
-    <Compile Include="Renderer.cs" />
     <Compile Include="TestElement.cs" />
     <Compile Include="UIWindow.cs" />
-    <Compile Include="ContentManager.cs" />
-    <Compile Include="Texture.cs" />
-    <Compile Include="UIButton.cs" />
-    <Compile Include="Font.cs" />
     <Compile Include="UITaskBar.cs" />
-    <Compile Include="UIRoot.cs" />
     <Compile Include="UIMenu.cs" />
-    <Compile Include="UIList.cs" />
-    <Compile Include="UITextEntryBox.cs" />
     <Compile Include="UINetworkView.cs" />
     <Compile Include="Devices.cs" />
     <Compile Include="Network.cs" />
+    <Compile Include="UIHackyRoot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -99,4 +89,10 @@
     </AndroidAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\CoreLib\RPCoreLib.csproj">
+      <Project>{47448600-9828-46EA-B38D-AD216E09EA6F}</Project>
+      <Name>RPCoreLib</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

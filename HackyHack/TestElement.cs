@@ -3,6 +3,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.ES11;
 using OpenTK.Platform;
 using OpenTK.Platform.Android;
+using RPCoreLib;
 
 namespace HackyHack
 {

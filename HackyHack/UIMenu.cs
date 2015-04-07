@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using OpenTK.Graphics.ES11;
 using Android.Graphics;
+using RPCoreLib;
 
 namespace HackyHack
 {
@@ -57,6 +58,8 @@ namespace HackyHack
 		readonly float[] ListScroll = { 0, 0 };
 		readonly float[] ListSizeLimit = { 0, 0 };
 		readonly float[] ListAreaSize = { 0, 0 };
+
+		public UITaskBar TaskBar;
 		
 		public UIMenu(Font tf)
 		{
@@ -101,7 +104,7 @@ namespace HackyHack
 		public override void ProcessScreenChanged()
 		{
 			ListAreaSize[0] = Renderer.r.ScreenRect.Right;
-			ListAreaSize[1] = Renderer.r.ScreenRect.Bottom - MenuListStartY - UIManager.ui.Root.Taskbar.Bounds.Y;
+			ListAreaSize[1] = Renderer.r.ScreenRect.Bottom - MenuListStartY - TaskBar.Bounds.Y;
 			ListSizeLimit[0] = 0;
 			foreach (UIMenuItem mi in OpenItems) ListSizeLimit[0] += mi.Width;
 			ListSizeLimit[1] = OpenItems.Count * ItemHeight;

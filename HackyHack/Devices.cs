@@ -116,7 +116,7 @@ namespace HackyHack
 
 		public void PropogateBandwidthDemand()
 		{
-			foreach (D)
+			//foreach (D)
 		}
 	}
 

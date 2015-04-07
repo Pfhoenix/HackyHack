@@ -1,5 +1,8 @@
+Need to start rendering the network
+ - devices need to be movable, but based on a grid
+
 Need a general network crawler
- - need to work on a BandwidthUpdate callback
+ - needs testing
 
 Devices
  - working on base functionality
@@ -54,3 +57,15 @@ Issues :
    - clients consume bandwidth, network devices distribute it
  - ideal behavior would be to start with all clients/servers that push up bandwidth needs
    - once bandwidth need pass reaches DTE, DTE allocates bandwidth down through each network device, which would then properly allocate bandwidth
+ - there are really two basic approaches :
+   - a pre-calculated bandwidth usage that calculates bandwidth availability pushing and bandwidth consumption pulling across the network
+     - start with bandwidth consumers
+       - all consumers pass to their connected network device their bandwidth demands
+       - each network device with only one other connected network device passes along it's total bandwidth demand
+         - this continues until hits a DTE or a network device with multiple network device connections
+     - starting at DTEs
+       - each network device
+   - a simulated-over-time approach where every tick :
+     - a reset starts with 
+     - consumer devices broadcast bandwidth demand
+       - if connected device

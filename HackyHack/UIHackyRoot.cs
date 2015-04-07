@@ -1,20 +1,22 @@
 using System;
+using RPCoreLib;
 
 namespace HackyHack
 {
-	public class UIRoot : UIElement
+	public class UIHackyRoot : UIRoot
 	{
 		public UITaskBar Taskbar;
-		public UIMenu MainMenu;
+		public UIMenu TopMenu;
 
-		public UIRoot()
+		public UIHackyRoot()
 		{
 			Taskbar = new UITaskBar();
 			AddChild(Taskbar);
 			Taskbar.ResetWithParent();
 
-			MainMenu = new UIMenu(UIManager.ui.UIMediumTextFont);
-			AddChild(MainMenu);
+			TopMenu = new UIMenu(UIManager.ui.UIMediumTextFont);
+			AddChild(TopMenu);
+			TopMenu.TaskBar = Taskbar;
 		}
 
 		public override void ProcessScreenChanged()
@@ -49,13 +51,13 @@ namespace HackyHack
 			uiw.MoveTo(rng.Next(50, 400), rng.Next(50, 400));
 		}
 
-		public void InitMainMenu()
+		public override void InitMainMenu()
 		{
-			MainMenu.RootItem = new UIMenuItem("System", MainMenu);
-			MainMenu.RootItem.AddSubItem("Test1", null);
-			UIMenuItem mi = MainMenu.RootItem.AddSubItem("Test2", null);
-			MainMenu.RootItem.AddSubItem("blah blah blah", CreateTestWindow);
-			MainMenu.RootItem.AddSubItem("Shutdown", Globals.g.AGView.CloseApp);
+			TopMenu.RootItem = new UIMenuItem("System", TopMenu);
+			TopMenu.RootItem.AddSubItem("Test1", null);
+			UIMenuItem mi = TopMenu.RootItem.AddSubItem("Test2", null);
+			TopMenu.RootItem.AddSubItem("blah blah blah", CreateTestWindow);
+			TopMenu.RootItem.AddSubItem("Shutdown", RPGlobals.g.GameView.CloseApp);
 
 			UIMenuItem mi2 = null;
 			for (int i = 0; i < 30; i++)
