@@ -1,9 +1,3 @@
-using System;
-using OpenTK.Platform.Android;
-using Android.App;
-using Android.Content;
-using Android.Graphics;
-using RPCoreLib;
 
 namespace HackyHack
 {

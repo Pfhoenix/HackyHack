@@ -33,7 +33,7 @@ namespace HackyHack
 		protected float AnimStartTime = -1;
 
 		public string Title = "Blah sse blah";
-		protected Font TextFont;
+		static protected Font TitleFont;
 		protected bool bMaximized;
 		protected Vector2 RestorePosition;
 		protected Vector2 RestoreSize;
@@ -66,7 +66,7 @@ namespace HackyHack
 			CloseButton.Pressed += ClosePressed;
 			AddChild(CloseButton);
 
-			TextFont = ContentManager.cm.GetFont("slider");
+			if (TitleFont == null) TitleFont = ContentManager.cm.GetFont("slider");
 
 			RestorePosition = new Vector2();
 			RestoreSize = new Vector2();
@@ -232,7 +232,7 @@ namespace HackyHack
 		{
 			// draw title
 			GL.Color4(255, 255, 255, 255);
-			Renderer.r.DrawText(Title, TextFont, px + ULCornerTex.Width, py + (TBBgTex.Height - TextFont.CharHeight) * 0.5f, px + Bounds.X - CloseButton.Bounds.X);
+			Renderer.r.DrawText(Title, TitleFont, px + ULCornerTex.Width, py + (TBBgTex.Height - TitleFont.CharHeight) * 0.5f, px + Bounds.X - CloseButton.Bounds.X);
 
 			GL.Color4(bgcolor.R, bgcolor.G, bgcolor.B, bgcolor.A);
 

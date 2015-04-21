@@ -17,15 +17,16 @@ namespace HackyHack
 			RPGlobals.g.AppName = "HackyHack";
 		}
 
-		protected override void InitUIRoot()
+		protected override void CreateUIRoot()
 		{
 			UIManager.ui.Root = new UIHackyRoot();
 		}
 
-		// This gets called when the drawing surface is ready
-		protected override void OnLoad(EventArgs e)
+		protected override void LoadInitialContent()
 		{
-			base.OnLoad(e);
+			base.LoadInitialContent();
+
+			ContentManager.cm.LoadStockFont(Typeface.Monospace, "mono-large", 40);
 
 			Texture t = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.window_map, "window_bg", null);
 			t.SetUVsByCoords(0, 0, 74, 72);
@@ -48,20 +49,6 @@ namespace HackyHack
 			t.SetUVsByCoords(43, 73, 22, 22);
 			t.Width = 32;
 			t.Height = 32;
-
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_left_on, "tb_left_on", null);
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_left_off, "tb_left_off", null);
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_right_on, "tb_right_on", null);
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_right_off, "tb_right_off", null);
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_left_up, "tb_bracket_left_up", null);
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_left_down, "tb_bracket_left_down", null);
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_right_up, "tb_bracket_right_up", null);
-			ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_right_down, "tb_bracket_right_down", null);
-
-			ContentManager.cm.LoadAssetFont("slider", 26);
-
-			// create the menu
-			UIManager.ui.Root.InitMainMenu();
 		}
 	}
 }

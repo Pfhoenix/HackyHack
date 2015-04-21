@@ -47,17 +47,17 @@ namespace HackyHack
 
 			Items = new List<UITaskBarItem>();
 			OnArrows = new Texture[2];
-			OnArrows[0] = ContentManager.cm.FindTexture("tb_left_on");
-			OnArrows[1] = ContentManager.cm.FindTexture("tb_right_on");
+			OnArrows[0] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_left_on, "tb_left_on", null);
+			OnArrows[1] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_right_on, "tb_right_on", null);
 			OffArrows = new Texture[2];
-			OffArrows[0] = ContentManager.cm.FindTexture("tb_left_off");
-			OffArrows[1] = ContentManager.cm.FindTexture("tb_right_off");
+			OffArrows[0] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_left_off, "tb_left_off", null);
+			OffArrows[1] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_right_off, "tb_right_off", null);
 			UpBrackets = new Texture[2];
-			UpBrackets[0] = ContentManager.cm.FindTexture("tb_bracket_left_up");
-			UpBrackets[1] = ContentManager.cm.FindTexture("tb_bracket_right_up");
+			UpBrackets[0] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_left_up, "tb_bracket_left_up", null);
+			UpBrackets[1] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_right_up, "tb_bracket_right_up", null);
 			DownBrackets = new Texture[2];
-			DownBrackets[0] = ContentManager.cm.FindTexture("tb_bracket_left_down");
-			DownBrackets[1] = ContentManager.cm.FindTexture("tb_bracket_right_down");
+			DownBrackets[0] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_left_down, "tb_bracket_left_down", null);
+			DownBrackets[1] = ContentManager.cm.LoadResourceToTexture(Resource.Drawable.tb_bracket_right_down, "tb_bracket_right_down", null);
 
 			TextFont = ContentManager.cm.GetFont("default");
 		}

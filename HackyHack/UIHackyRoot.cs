@@ -8,28 +8,17 @@ namespace HackyHack
 		public UITaskBar Taskbar;
 		public UIMenu TopMenu;
 
+		public Vector2 MaxWindowSize = new Vector2();
+
 		public UIHackyRoot()
 		{
-			Taskbar = new UITaskBar();
-			AddChild(Taskbar);
-			Taskbar.ResetWithParent();
-
-			TopMenu = new UIMenu(UIManager.ui.UIMediumTextFont);
-			AddChild(TopMenu);
-			TopMenu.TaskBar = Taskbar;
-		}
-
-		public override void ProcessScreenChanged()
-		{
-			Bounds.X = Renderer.r.ScreenRect.Right;
-			Bounds.Y = Renderer.r.ScreenRect.Bottom;
-
-			base.ProcessScreenChanged();
 		}
 
 		public override bool ProcessInputEvent(EInputEvent ie, float x, float y, float px, float py)
 		{
 			if (base.ProcessInputEvent(ie, x, y, px, py)) return true;
+
+			//if (ie == EInputEvent.SingleTap) CreateTestWindow();
 
 			return false;
 		}
@@ -53,22 +42,44 @@ namespace HackyHack
 
 		public override void InitMainMenu()
 		{
+			Taskbar = new UITaskBar();
+			AddChild(Taskbar);
+			Taskbar.ResetWithParent();
+			Taskbar.bVisible = false;
+
+			TopMenu = new UIMenu(UIManager.ui.UIMediumTextFont);
+			AddChild(TopMenu);
+			TopMenu.TaskBar = Taskbar;
+			TopMenu.bVisible = false;
+
 			TopMenu.RootItem = new UIMenuItem("System", TopMenu);
-			TopMenu.RootItem.AddSubItem("Test1", null);
-			UIMenuItem mi = TopMenu.RootItem.AddSubItem("Test2", null);
-			TopMenu.RootItem.AddSubItem("blah blah blah", CreateTestWindow);
+			UIMenuItem ht = TopMenu.RootItem.AddSubItem("Hack Tests", null);
+			ht.AddSubItem("Firewall", TestFirewallHack);
+			TopMenu.RootItem.AddSubItem("Create Test Window", CreateTestWindow);
 			TopMenu.RootItem.AddSubItem("Shutdown", RPGlobals.g.GameView.CloseApp);
 
-			UIMenuItem mi2 = null;
-			for (int i = 0; i < 30; i++)
-			{
-				mi2 = mi.AddSubItem("SubTest" + i, null);
-			}
+			ProcessScreenChanged();
 
-			for (int i = 1; i < 11; i++)
-			{
-				mi2.AddSubItem("SubSubTest" + i, null);
-			}
+			MaxWindowSize.X = Bounds.X - Taskbar.Bounds.Y - TopMenu.Bounds.Y;
+			MaxWindowSize.Y = Bounds.Y;
+		}
+
+		public override void OpenMainMenu()
+		{
+			// open main menu here
+			// for now, make visible the menu and taskbar
+			TopMenu.bVisible = true;
+			Taskbar.bVisible = true;
+		}
+
+		public void TestFirewallHack()
+		{
+			Firewall fw = new Firewall();
+			fw.GeneralActivity = 1;
+			UIWindowHackFirewall whf = new UIWindowHackFirewall(fw);
+			OpenWindow(whf);
+			whf.Resize(whf.Bounds.X, whf.Bounds.Y);
+			whf.MoveTo(70, TopMenu.Bounds.Y + 10);
 		}
 	}
 }

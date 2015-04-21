@@ -214,6 +214,31 @@ namespace HackyHack
 
 	public class Firewall : NetworkDevice
 	{
+		// how long the firewall refreshes connection validations
+		// the higher the min, the easier the hack
+		// the higher the range, the closer attention the hacker must pay
+		public float ConnectionValidationTimeRange;
+		public float ConnectionValidationTimeMin;
+
+		// the maximum number of allowed errors per cycle timeframe before the firewall raises an alarm
+		// the higher the value, the easier the hack
+		public int NumAllowedErrorsPerCycle;
+		// the length of time in seconds for the firewall's intrusion detection threshold
+		// the higher the cycle time, the easier the hack
+		public float ErrorCycleTime;
+
+		// the maximum number of simultaneous connections before the firewall raises an alarm
+		public int NumMaxSimultaneousConnections;
+
+		// the general complexity of the firewall's traffic management
+		// this is the value that hackers must build up to in order to bypass this firewall
+		public float TrafficComplexity;
+
+		// directly used to calculate the number of firewall cells to use
+		// indicates in general how busy the firewall is
+		// the higher the general activity, the easier the hack
+		public int GeneralActivity;
+		
 		public Firewall()
 		{
 			CrawlDescriptor = ECrawlOptions.Firewalls;

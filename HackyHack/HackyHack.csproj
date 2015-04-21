@@ -57,6 +57,7 @@
     <Compile Include="Devices.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="UIHackyRoot.cs" />
+    <Compile Include="UIWindowHackFirewall.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -83,11 +84,6 @@
     <AndroidResource Include="Resources\drawable\icon_switch.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup>
-    <AndroidAsset Include="Assets\slider.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\..\CoreLib\RPCoreLib.csproj">
