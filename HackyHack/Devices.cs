@@ -220,24 +220,23 @@ namespace HackyHack
 		public float ConnectionValidationTimeRange;
 		public float ConnectionValidationTimeMin;
 
-		// the maximum number of allowed errors per cycle timeframe before the firewall raises an alarm
-		// the higher the value, the easier the hack
-		public int NumAllowedErrorsPerCycle;
-		// the length of time in seconds for the firewall's intrusion detection threshold
-		// the higher the cycle time, the easier the hack
-		public float ErrorCycleTime;
+		// the maximum number of allowed errors before the firewall raises an alarm
+		public int NumAllowedErrors;
 
 		// the maximum number of simultaneous connections before the firewall raises an alarm
+		// only high security networks place a low limit on this
 		public int NumMaxSimultaneousConnections;
 
 		// the general complexity of the firewall's traffic management
 		// this is the value that hackers must build up to in order to bypass this firewall
 		public float TrafficComplexity;
 
-		// directly used to calculate the number of firewall cells to use
 		// indicates in general how busy the firewall is
-		// the higher the general activity, the easier the hack
-		public int GeneralActivity;
+		// the higher the activity level, the easier the hack
+		public double ActivityLevel;
+
+		// the size of the firewall (determines the grid size)
+		public int Size;
 		
 		public Firewall()
 		{

@@ -75,7 +75,11 @@ namespace HackyHack
 		public void TestFirewallHack()
 		{
 			Firewall fw = new Firewall();
-			fw.GeneralActivity = 1;
+			fw.ConnectionValidationTimeMin = 0.5f;
+			fw.ConnectionValidationTimeRange = 1f;
+			fw.ActivityLevel = 0.125;
+			fw.TrafficComplexity = 5f;
+			fw.Size = 1;
 			UIWindowHackFirewall whf = new UIWindowHackFirewall(fw);
 			OpenWindow(whf);
 			whf.Resize(whf.Bounds.X, whf.Bounds.Y);
