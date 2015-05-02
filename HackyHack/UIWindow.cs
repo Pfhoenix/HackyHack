@@ -596,6 +596,8 @@ namespace HackyHack
 
 		public override void Render(float psx, float psy)
 		{
+			Renderer.r.SetScissor((int)(psx + Position.X), (int)(psy + Position.Y), (int)Bounds.X + 1, (int)Bounds.Y + 1);
+
 			if (bOpening) RenderOpening(psx + Position.X, psy + Position.Y);
 			else if (bClosing) RenderClosing(psx + Position.X, psy + Position.Y);
 			else base.Render(psx, psy);

@@ -54,7 +54,10 @@ namespace HackyHack
 
 			TopMenu.RootItem = new UIMenuItem("System", TopMenu);
 			UIMenuItem ht = TopMenu.RootItem.AddSubItem("Hack Tests", null);
-			ht.AddSubItem("Firewall", TestFirewallHack);
+			UIMenuItem fh = ht.AddSubItem("Firewall", null);
+			fh.AddSubItem("Easy", TestFirewallHackEasy);
+			fh.AddSubItem("Medium", TestFirewallHackMedium);
+			fh.AddSubItem("Hard", TestFirewallHackHard);
 			TopMenu.RootItem.AddSubItem("Create Test Window", CreateTestWindow);
 			TopMenu.RootItem.AddSubItem("Shutdown", RPGlobals.g.GameView.CloseApp);
 
@@ -72,7 +75,7 @@ namespace HackyHack
 			Taskbar.bVisible = true;
 		}
 
-		public void TestFirewallHack()
+		public void TestFirewallHackEasy()
 		{
 			Firewall fw = new Firewall();
 			fw.ConnectionValidationTimeMin = 0.5f;
@@ -84,6 +87,63 @@ namespace HackyHack
 			OpenWindow(whf);
 			whf.Resize(whf.Bounds.X, whf.Bounds.Y);
 			whf.MoveTo(70, TopMenu.Bounds.Y + 10);
+		}
+
+		public void TestFirewallHackMedium()
+		{
+			Firewall fw = new Firewall();
+			fw.ConnectionValidationTimeMin = 0.25f;
+			fw.ConnectionValidationTimeRange = 0.5f;
+			fw.ActivityLevel = 0.05;
+			fw.TrafficComplexity = 5f;
+			fw.Size = 2;
+			UIWindowHackFirewall whf = new UIWindowHackFirewall(fw);
+			OpenWindow(whf);
+			whf.Resize(whf.Bounds.X, whf.Bounds.Y);
+			whf.MoveTo(70, TopMenu.Bounds.Y + 10);
+		}
+
+		public void TestFirewallHackHard()
+		{
+			Firewall fw = new Firewall();
+			fw.ConnectionValidationTimeMin = 0.2f;
+			fw.ConnectionValidationTimeRange = 0.33f;
+			fw.ActivityLevel = 0.025;
+			fw.TrafficComplexity = 5f;
+			fw.Size = 3;
+			UIWindowHackFirewall whf = new UIWindowHackFirewall(fw);
+			OpenWindow(whf);
+			whf.Resize(whf.Bounds.X, whf.Bounds.Y);
+			whf.MoveTo(70, TopMenu.Bounds.Y + 10);
+		}
+
+		public override void Render(float psx, float psy)
+		{
+			if (!bVisible) return;
+
+			float cpsx = psx + Position.X;
+			float cpsy = psy + Position.Y;
+
+			bool scissoring = false;
+
+			if (Children != null)
+			{
+				UILinkedListNode lln = Children;
+				while (lln != null)
+				{
+					if ((lln.Element is UIWindow) && !scissoring)
+					{
+						scissoring = true;
+						Renderer.r.EnableScissor();
+					}
+					lln.Element.Render(cpsx, cpsy);
+					lln = lln.NextNode;
+				}
+			}
+
+			Renderer.r.DisableScissor();
+
+			RenderMe(cpsx, cpsy);
 		}
 	}
 }

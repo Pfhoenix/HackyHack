@@ -53,15 +53,15 @@ namespace HackyHack
 			Title = "Firewall Bypass";
 
 			Hacking = fw;
-			if (Hacking.Size == 1) Cells = new FirewallCell[12,9];
-			else if (Hacking.Size == 2) Cells = new FirewallCell[20,15];
-			else if (Hacking.Size == 3) Cells = new FirewallCell[36,27];
+			if (Hacking.Size == 1) Cells = new FirewallCell[6,4];
+			else if (Hacking.Size == 2) Cells = new FirewallCell[10,6];
+			else if (Hacking.Size == 3) Cells = new FirewallCell[14,8];
 			CellSize = CellCharSize + CellPadding * 2;
 			CellSize.X += 3;
 			CellSize.Y += 3;
 			GridSize = CellSize;
 			GridSize.Multiply(Cells.GetLength(0), Cells.GetLength(1));
-			BarSize = new Vector2(GridSize.X * 0.75f, CellCharSize.Y + 4);
+			BarSize = new Vector2(GridSize.X * 0.75f, CellCharSize.Y / 2);
 			BarOrigin = new Vector2(GridOrigin.X + (GridSize.X - BarSize.X) / 2, GridOrigin.Y + GridSize.Y + TextFont.CharHeight + 5);
 
 			Bounds.X = GridOrigin.X * 2 + GridSize.X;

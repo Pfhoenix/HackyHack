@@ -1,3 +1,6 @@
+Add options to Firewall test menu
+- easy, medium, hard firewalls to play with
+
 Need to start rendering the network
  - devices need to be movable, but based on a grid
 
